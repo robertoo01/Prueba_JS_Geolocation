@@ -21,7 +21,7 @@ const geoPositions = [
   { id: 3, latitud: 91.56, longitud:-3.45}
 ];
 
-app.get('/', (req, res) => {
+app.get('/Prueba', (req, res) => {
     res.json(users);
 });
 
