@@ -1,12 +1,17 @@
-//Código de prueba
-const express = require('express');
-const app = express();
+//Código de prueba de "developer.mozilla.org"
+const data = { username: "example" };
 
-app.get('https://robertoo01.github.io', (req, res) => {
-  res.send("Prueba");
-});
-
-// Iniciar el servidor en el puerto 3000
-app.listen("https://robertoo01.github.io", () => {
-  console.log('API');
-});
+fetch("https://robertoo01.github.io", {
+  method: "POST", // or 'PUT'
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify(data),
+})
+  .then((response) => response.json())
+  .then((data) => {
+    console.log("Success:", data);
+  })
+  .catch((error) => {
+    console.error("Error:", error);
+  });
