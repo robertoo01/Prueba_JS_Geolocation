@@ -2,37 +2,10 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Mi aplicación web</title>
-	<script src="https://unpkg.com/leaflet@1.0.2/dist/leaflet.js"></script>
-	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <title>API</title>
+	<script src="js.js"></script>
   </head>
   <body>
-    <h1>Bienvenido a mi aplicación web</h1>
-	<button onclick="geo()">Click</button>
-    
-    <!-- Aquí se puede agregar el contenido de la aplicación web -->
-    
-    <!-- Incluir el script de JavaScript -->
-    	<script>
-		function geo(){
-			navigator.geolocation.getCurrentPosition(function(position) {
-  					var latitud = position.coords.latitude;
-					var longitud= position.coords.longitude;
-					var all= position.coords;
-  					//console.log("Latitud: " + latitud);
-					alert(latitud);
-					for (var i in position){
-                                	console.log(i + ": "+ position[i]+ "\n");
-						for (var j in position[i]){
-							console.log("    "+i+": "+position[i] + " " +j+  " " + position[i][j]);
-						}
-					}
-				}, function(error) {
-  					console.log("Error al obtener la posición geográfica: " + error.message);
-					alert("err");
-			});
-		}
-
-	</script>
+	  <p>API Prueba</p>
   </body>
 </html>
