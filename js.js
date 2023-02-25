@@ -2,7 +2,7 @@
 const express = require('express');
 const app = express();
 
-app.get('https://robertoo01.github.io/Prueba', (req, res) => {
+app.get('https://robertoo01.github.io', (req, res) => {
   res.send("Prueba");
 });
 
