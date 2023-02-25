@@ -5,19 +5,21 @@
     <title>Captura Geolocalización</title>
   </head>
   <body>
-    <h1>Bienvenido a mi aplicación web</h1>
-	  <button onclick="geo()">Click</button>
-    <script>
-      function geo(){
-        navigator.geolocation.getCurrentPosition(function(position) {
-            var latitud = position.coords.latitude;
-            var longitud= position.coords.longitude;
-            alert(latitud + " " + longitud);
-          }, function(error) {
-              console.log("Error al obtener la posición geográfica: " + error.message);
-            alert("err");
-        });
-      }
-	  </script>
+	  <h1>APLICACIÓN WEB EXCLUSIVA DE USO ACADÉMICO</h1>
+    	<h1>Esta aplicación captura, en modo local, la posición geográfica de su dispositivo móvil</h1>
+	  <h1>No guarda ningun dato</h1>
+	<button onclick="geo()">Click</button>
+    	<script>
+	      function geo(){
+		navigator.geolocation.getCurrentPosition(function(position) {
+		    var latitud = position.coords.latitude;
+		    var longitud= position.coords.longitude;
+		    alert(latitud + " " + longitud);
+		  }, function(error) {
+		      console.log("Error al obtener la posición geográfica: " + error.message);
+		    alert("err");
+		});
+	      }
+	</script>
   </body>
 </html>
