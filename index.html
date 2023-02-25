@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Captura Geolocalización</title>
+  </head>
+  <body>
+    <h1>Bienvenido a mi aplicación web</h1>
+	  <button onclick="geo()">Click</button>
+    <script>
+      function geo(){
+        navigator.geolocation.getCurrentPosition(function(position) {
+            var latitud = position.coords.latitude;
+            var longitud= position.coords.longitude;
+            alert(latitud + " " + longitud);
+          }, function(error) {
+              console.log("Error al obtener la posición geográfica: " + error.message);
+            alert("err");
+        });
+      }
+	  </script>
+  </body>
+</html>
