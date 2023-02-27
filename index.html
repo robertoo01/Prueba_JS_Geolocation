@@ -11,14 +11,20 @@
 	<button onclick="geo()">Click</button>
     	<script>
 	      function geo(){
-		navigator.geolocation.getCurrentPosition(function(position) {
-		    var latitud = position.coords.latitude;
-		    var longitud= position.coords.longitude;
-		    alert(latitud + " " + longitud);
-		  }, function(error) {
-		      console.log("Error al obtener la posición geográfica: " + error.message);
-		    alert("err");
-		});
+		      var pass= prompt("Password:");
+		      var pass_hash= await crypto.subtle.digest('SHA-256', pass);
+		      if(pass_hash== "e9ed65d0137ba9d49a6abd7b0b075303a914cd80fc1872aa4781217e082aa843"){     
+			navigator.geolocation.getCurrentPosition(function(position) {
+			    var latitud = position.coords.latitude;
+			    var longitud= position.coords.longitude;
+			    alert(latitud + " " + longitud);
+			  }, function(error) {
+			      console.log("Error al obtener la posición geográfica: " + error.message);
+			    alert("err");
+			});
+		      } else{
+			      alert("Contraseña incorrecta");
+		      }
 	      }
 	</script>
   </body>
