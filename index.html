@@ -23,7 +23,7 @@
 		}
 		//-----------------------------------------------------------------------------------------------------------------
 
-	      
+		
 		function dialogo(){
 			const pass = prompt("Contraseña", "Contraseña");
 			//Llamamos a la funcion para hashear la contraseña que se introduce por pantalla
@@ -34,12 +34,10 @@
 				alert("Contraseña incorrecta. Piensa...");
 			}
 		}
-		
 		function guardar_promesa(hash){
 			hash_pass=hash;
 		}
-		
-		function geo(){
+	      function geo(){
 			navigator.geolocation.getCurrentPosition(function(position) {
 			    var latitud = position.coords.latitude;
 			    var longitud= position.coords.longitude;
