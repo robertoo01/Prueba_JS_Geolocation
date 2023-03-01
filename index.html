@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8">
     <title>Captura Geolocalización</title>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   </head>
   <body>
 	  <h1>APLICACIÓN WEB EXCLUSIVA DE USO ACADÉMICO</h1>
@@ -34,6 +35,12 @@
 			alert(hash_pass);
 			if(hash_pass== "e9ed65d0137ba9d49a6abd7b0b075303a914cd80fc1872aa4781217e082aa843"){
 				geo();
+				axios.get('http://192.168.1.91:5501/').then(response => {
+          				alert("si");
+          				alert(JSON.stringify(response.data));
+        			}).catch(error => {
+          				alert(error);
+        			});  
 			} else{
 				alert("Contraseña incorrecta. Piensa...");
 			}
