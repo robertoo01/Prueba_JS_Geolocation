@@ -2,15 +2,91 @@
 <html>
   <head>
     <meta charset="UTF-8">
+	<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
     <title>Captura Geolocalización</title>
   </head>
   <body>
-	  <h1>APLICACIÓN WEB EXCLUSIVA DE USO ACADÉMICO</h1>
-    	<h1>Esta aplicación captura, en modo local, la posición geográfica de su dispositivo móvil</h1>
-	  <h1>No guarda ningun dato</h1>
-	<button onclick="dialogo()">Click</button>
-    	<script>
+	<h1>APLICACIÓN WEB EXCLUSIVA DE USO ACADÉMICO</h3>
+	<h3>Si se presiona el botón de Geolocalizar se almacenará la longitud y latitud en las que se encuentra su dispositivo</h1>
+	<h3>Si se presiona el botón de Configurar se generará un constante
+		(No se puede modificar en una misma instancia. Se deberá recargar la página en caso de que lo introducido sea erróneo)
+		que contendrá los datos de configuración de Firebase para poder realizar la conexión a la Base de Datos.
+		Debido a que esta página no está en un servidor privado, se ha decidido que los datos de configuración tengan que
+		incluirse a mano.
+		Una vez ejecutado el botón de configuración, se subirá a la Base de Datos del sistema, alojada en Firestore 
+		las coordenadas de su su dispositivo.
+	</h3>
+	<button onclick="dialogo()">Geolocalizar</button>
+	<button type="button" id="btnConfig" onclick="configurar()">Configurar variables Firebase</button>
+	<form>
+		<div>
+			<input type="text" placeholder="api Key" name="api_Key" id="apiKey">
+			<input type="text" placeholder="auth Domain" name="auth_Domain" id="authDomain">
+			<input type="text" placeholder="project Id" name="project_Id" id="projectId">
+			<input type="text" placeholder="storage Bucket" name="storage_Bucket" id="storageBucket">
+			<input type="text" placeholder="messaging Sender Id" name="messaging_Sender_Id" id="messagingSenderId">
+			<input type="text" placeholder="app Id" name="app_Id" id="appId">
+		</div>
+	</form>
+
+	<script type="module">
+		import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js";
+		import { getFirestore, collection, addDoc, doc, getDocs } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore.js";
+		
+		//Constante que almacena el boton de configuracion
+		const btn= document.getElementById("btnConfig");
+
+		//Evento de escucha a espera de que se genere un click en el boton de configuracion
+		btn.addEventListener('click', e=>{
+			//Constante de firebaseConfig. Se generara dicho objeto con los valores introducidos por pantalla
+			//Al estar almacenado en un servidor publico se ha considerado que por motivos de seguridad,
+			//es preferible insertar los valores manualmente. Este es un servidor secundario.
+			if(latitudGeolocalizada!=""){
+				const firebaseConfig = {
+					apiKey: fbObject[0],
+					authDomain: fbObject[1],
+					projectId: fbObject[2],
+					storageBucket: fbObject[3],
+					messagingSenderId: fbObject[4],
+					appId: fbObject[5]
+				};
+				//Inicializamos la app de firebase mediante los valores de introducidos en la configuracion
+				//Solamente se dara acceso en caso de que los valores introducidos sean correctos
+				const app = initializeApp(firebaseConfig);
+				const db= getFirestore(app);
+
+				addDoc(collection(db, "coordenadas"),{
+					id: Math.floor(Math.random() * 100000),
+					latitud:latitudGeolocalizada,
+					longitud: longitudGeolocalizada,
+					fecha: date.getDate() + "/" + (date.getMonth()+1) + "/" + date.getFullYear(),
+				});
+				document.body.innerHTML = "Coordenadas subidas a Firebase";
+			} else{
+				document.body.innerHTML = "Debes de geolocalizar primero para poder subir las coordenadas";
+			}
+			
+		});
+
+	</script>
+    
+	<script>
+
+		let fbObject=[];
 		let hash_pass="";
+		let latitudGeolocalizada="";
+		let longitudGeolocalizada="";
+		const date= new Date();
+
+		function configurar(){
+			fbObject[0]= document.getElementById("apiKey").value;
+			fbObject[1]= document.getElementById("authDomain").value;
+			fbObject[2]= document.getElementById("projectId").value;
+			fbObject[3]= document.getElementById("storageBucket").value;
+			fbObject[4]= document.getElementById("messagingSenderId").value;
+			fbObject[5]= document.getElementById("appId").value;
+		}
 
 		//FUNCION ASINCRONA SACADA DE https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/digest
 		//-----------------------------------------------------------------------------------------------------------------
@@ -33,21 +109,21 @@
 			hash_pass=hash;
 			alert(hash_pass);
 			if(hash_pass== "e9ed65d0137ba9d49a6abd7b0b075303a914cd80fc1872aa4781217e082aa843"){
-				geo();
+				geolocalizar();
 			} else{
 				alert("Contraseña incorrecta. Piensa...");
 			}
 		}
-	      function geo(){
+	    function geolocalizar(){
 			navigator.geolocation.getCurrentPosition(function(position) {
-			    var latitud = position.coords.latitude;
-			    var longitud= position.coords.longitude;
-			    alert(latitud + " " + longitud);
+			    latitudGeolocalizada = position.coords.latitude;
+			    longitudGeolocalizada= position.coords.longitude;
+			    alert(latitudGeolocalizada + " " + longitudGeolocalizada);
 			  }, function(error) {
 			      console.log("Error al obtener la posición geográfica: " + error.message);
 			    alert("err");
 			});
-	      }
+	    }
 	</script>
   </body>
 </html>
