@@ -18,7 +18,7 @@
 		las coordenadas de su su dispositivo.
 	</h3>
 	<button onclick="dialogo()">Geolocalizar</button>
-	<button type="button" id="btnConfig" onclick="configurar()">Configurar variables Firebase</button>
+	<button type="button" id="btnConfig" onclick="configurar()">Subir Coordenada</button>
 	<form>
 		<div>
 			<input type="text" placeholder="api Key" name="api_Key" id="apiKey">
@@ -28,17 +28,22 @@
 			<input type="text" placeholder="messaging Sender Id" name="messaging_Sender_Id" id="messagingSenderId">
 			<input type="text" placeholder="app Id" name="app_Id" id="appId">
 		</div>
+		<div>
+			<input type="text" placeholder="Tipo" name="Type" id="type">
+			<input type="text" placeholder="Nombre" name="Name" id="name">
+			<input type="text" placeholder="Descripcion" name="Description" id="description">
+		</div>
 	</form>
 
 	<script type="module">
 		import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js";
-		import { getFirestore, collection, addDoc, doc, getDocs } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore.js";
+		import { getFirestore, collection, addDoc, doc, getDocs, setDoc } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore.js";
 		
 		//Constante que almacena el boton de configuracion
 		const btn= document.getElementById("btnConfig");
 
 		//Evento de escucha a espera de que se genere un click en el boton de configuracion
-		btn.addEventListener('click', e=>{
+		btn.addEventListener('click', async e=>{
 			//Constante de firebaseConfig. Se generara dicho objeto con los valores introducidos por pantalla
 			//Al estar almacenado en un servidor publico se ha considerado que por motivos de seguridad,
 			//es preferible insertar los valores manualmente. Este es un servidor secundario.
@@ -56,12 +61,23 @@
 				const app = initializeApp(firebaseConfig);
 				const db= getFirestore(app);
 
-				addDoc(collection(db, "coordenadas"),{
-					id: Math.floor(Math.random() * 100000),
+				const collectionCoords = collection(db, 'coordenadas');
+  				const collectionCoordsSave = await getDocs(collectionCoords);
+  				const collectionCoordsSaveMap = collectionCoordsSave.docs.map(doc => doc.data());
+
+				const coordinatesObject={
+					id: collectionCoordsSaveMap.length,
 					latitud:latitudGeolocalizada,
 					longitud: longitudGeolocalizada,
-					fecha: date.getDate() + "/" + (date.getMonth()+1) + "/" + date.getFullYear(),
-				});
+					date: date.getDate() + "/" + (date.getMonth()+1) + "/" + date.getFullYear(),
+					type: fbObject[6],
+					name: fbObject[7],
+        			description: fbObject[8],
+        			active: 1,
+				}
+
+				setDoc(doc(db, "coordenadas", coordinatesObject.id.toString()), coordinatesObject);
+						
 				document.body.innerHTML = "Coordenadas subidas a Firebase";
 			} else{
 				document.body.innerHTML = "Debes de geolocalizar primero para poder subir las coordenadas";
@@ -86,6 +102,10 @@
 			fbObject[3]= document.getElementById("storageBucket").value;
 			fbObject[4]= document.getElementById("messagingSenderId").value;
 			fbObject[5]= document.getElementById("appId").value;
+			fbObject[6]= document.getElementById("type").value;
+			fbObject[7]= document.getElementById("name").value;
+			fbObject[8]= document.getElementById("description").value;
+			
 		}
 
 		//FUNCION ASINCRONA SACADA DE https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/digest
