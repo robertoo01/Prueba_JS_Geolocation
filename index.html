@@ -9,16 +9,18 @@
   <body>
 	<h1>APLICACIÓN WEB EXCLUSIVA DE USO ACADÉMICO</h3>
 	<h3>Si se presiona el botón de Geolocalizar se almacenará la longitud y latitud en las que se encuentra su dispositivo</h1>
-	<h3>Si se presiona el botón de Configurar se generará un constante
+	<h3>Si se presiona el botón de Subir Incidencia se generará un constante
 		(No se puede modificar en una misma instancia. Se deberá recargar la página en caso de que lo introducido sea erróneo)
-		que contendrá los datos de configuración de Firebase para poder realizar la conexión a la Base de Datos.
+		que contendrá los datos de configuración de Firebase para poder realizar la conexión a la Base de Datos, además de los datos
+		ingresados por el usuario correspondientes a la incidencia.
 		Debido a que esta página no está en un servidor privado, se ha decidido que los datos de configuración tengan que
 		incluirse a mano.
-		Una vez ejecutado el botón de configuración, se subirá a la Base de Datos del sistema, alojada en Firestore 
-		las coordenadas de su su dispositivo.
+		Una vez ejecutado el botón de subir incidencia, se subirá a la Base de Datos del sistema, alojada en Firestore 
+		las coordenadas de su su dispositivo, además de los datos agregados en los campos. 
+		Se subirá también, de manera automática (sin que etenga que hacer nada) la fecha y un valor en 1 al atributo active.
 	</h3>
 	<button onclick="dialogo()">Geolocalizar</button>
-	<button type="button" id="btnConfig" onclick="configurar()">Subir Coordenada</button>
+	<button type="button" id="btnConfig" onclick="configurar()">Subir Incidencia</button>
 	<form>
 		<div>
 			<input type="text" placeholder="api Key" name="api_Key" id="apiKey">
